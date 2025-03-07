@@ -2,9 +2,13 @@ package com.milky.controller;
 
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.milky.entity.Milk;
@@ -16,6 +20,9 @@ import com.milky.service.UserService;
 
 @Controller
 public class HomeController {
+	
+	@Autowired
+	PasswordEncoder passwordEncoder;
 
     @Autowired
     private UserService userService;
@@ -29,6 +36,29 @@ public class HomeController {
     @GetMapping("/")
     public String homePage() {
         return "index";
+    }
+    
+    @GetMapping("/login-page")
+    public String logInPage() {
+    	return "login";
+    }
+    
+    @PostMapping("/add-user")
+    public String registernewUser(@RequestParam("name") String name,
+    		@RequestParam("address") String address,
+    		@RequestParam("email") String email,
+    		@RequestParam("password") String password,
+    		@RequestParam("contactNo") String contactNo
+    		) {
+    	User u = new User();
+    	u.setRole("ROLE_USER");
+    	u.setName(name);
+    	u.setAddress(address);
+    	u.setEmail(email);
+    	u.setPassword(passwordEncoder.encode(password));
+    	u.setContactNo(contactNo);
+    	userService.saveUser(u);
+    	return "login";
     }
 
     @GetMapping("/product")
@@ -56,5 +86,7 @@ public class HomeController {
 
         return "product";
     }
+    
+    
 
 }
