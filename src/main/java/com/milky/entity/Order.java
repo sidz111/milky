@@ -1,40 +1,101 @@
 package com.milky.entity;
 
+import java.util.ArrayList;
+
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "orders") // ✅ Change table name to avoid conflict
+@Table(name = "orders")
 public class Order {
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
 
-    private String time;
-    
-    private Boolean isConfirmed;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+	private String time;
+	private Boolean isConfirmed;
 
-    @ManyToOne
-    @JoinColumn(name = "milk_id", nullable = false)
-    private Milk milk;
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User user;
 
-    // Getters and Setters
-    public Integer getId() { return id; }
-    public void setId(Integer id) { this.id = id; }
+	@ManyToOne
+	@JoinColumn(name = "milk_id", nullable = true)
+	private Milk milk;
 
-    public String getTime() { return time; }
-    public void setTime(String time) { this.time = time; }
+	@ManyToOne
+	@JoinColumn(name = "dairy_product_id", nullable = true)
+	private DairyProduct dairyProduct;
 
-    public Boolean getIsConfirmed() { return isConfirmed; }
-    public void setIsConfirmed(Boolean isConfirmed) { this.isConfirmed = isConfirmed; }
+	// Getters and Setters
+	public Integer getId() {
+		return id;
+	}
 
-    public User getUser() { return user; }
-    public void setUser(User user) { this.user = user; }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    public Milk getMilk() { return milk; }
-    public void setMilk(Milk milk) { this.milk = milk; }
+	public String getTime() {
+		return time;
+	}
+
+	public void setTime(String time) {
+		this.time = time;
+	}
+
+	public Boolean getIsConfirmed() {
+		return isConfirmed;
+	}
+
+	public void setIsConfirmed(Boolean isConfirmed) {
+		this.isConfirmed = isConfirmed;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+		if (!user.getOrders().contains(this)) {
+			user.getOrders().add(this);
+		}
+	}
+
+	public Milk getMilk() {
+		return milk;
+	}
+
+	public void setMilk(Milk milk) {
+		this.milk = milk;
+
+		if (milk.getOrders() == null) {
+			milk.setOrders(new ArrayList<>());
+		}
+
+		if (!milk.getOrders().contains(this)) {
+			milk.getOrders().add(this);
+		}
+	}
+
+	public void setDairyProduct(DairyProduct dairyProduct) {
+		if(dairyProduct.getOrders() == null) {
+			dairyProduct.setOrders(new ArrayList<>());
+		}
+		
+		if(!dairyProduct.getOrders().contains(this)) {
+			dairyProduct.getOrders().add(this);
+		}
+		this.dairyProduct = dairyProduct;
+	}
+	
+	public DairyProduct getDairyProduct() {
+		return this.dairyProduct;
+	}
+
+	
+	
+
+
 }

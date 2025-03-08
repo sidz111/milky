@@ -37,7 +37,7 @@ public class UserSecurity {
 		
 		httpSecurity.csrf().disable()
 		.authorizeHttpRequests()
-		.requestMatchers("/admin/**")
+		.requestMatchers("/admins/**")
 		.hasRole("ADMIN")
 		.requestMatchers("/")
 		.authenticated()

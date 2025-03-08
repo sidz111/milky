@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.milky.entity.Order;
+import com.milky.service.DairyProductService;
 import com.milky.service.OrderService;
 
 @Controller
@@ -19,16 +20,20 @@ public class AdminController {
 	@Autowired
 	OrderService orderService;
 	
+	@Autowired
+	DairyProductService dairyProductService;
+	
 	@GetMapping("orders")
 	public String orderPage(Model model) {
 		model.addAttribute("orders", orderService.getAllOrders());
+		model.addAttribute("dp", dairyProductService.getAllDairyProducts());
 		return "orders";
 	}
 	
-	 @PostMapping("/confirm-order/{id}")
-	    public String confirmOrder(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
-	        orderService.confirmOrder(id);
-	        redirectAttributes.addFlashAttribute("successMessage", "Order #" + id + " confirmed successfully!");
-	        return "redirect:/orders";
-	    }
+//	 @PostMapping("/confirm-order/{id}")
+//	    public String confirmOrder(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
+//	        orderService.confirmOrder(id);
+//	        redirectAttributes.addFlashAttribute("successMessage", "Order #" + id + " confirmed successfully!");
+//	        return "redirect:/orders";
+//	    }
 }

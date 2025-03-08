@@ -21,6 +21,7 @@
 						<th>User Name</th>
 						<th>Address</th>
 						<th>Milk (Litres)</th>
+						<td>Product Name</td>
 						<th>Time</th>
 					</tr>
 				</thead>
@@ -29,9 +30,9 @@
 						<td th:text="${order.id}"></td>
 						<td th:text="${order.user.name}"></td>
 						<td th:text="${order.user.address}"></td>
-						<td th:text="${order.milk.litre}"></td>
+						<td th:text="${order.milk != null ? order.milk.litre : '-'}"></td>
+						<td th:text="${order.dairyProduct != null ? order.dairyProduct.name +' - '+(order.dairyProduct.quantity) : '-' }"></td>
 						<td th:text="${order.time}"></td>
-						
 					</tr>
 				</tbody>
 			</table>

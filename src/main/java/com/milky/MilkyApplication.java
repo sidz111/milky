@@ -24,7 +24,7 @@ public class MilkyApplication {
 	                User admin = new User();
 	                admin.setEmail("sssurwade2212@gmail.com");
 	                admin.setPassword(passwordEncoder.encode("admin1234"));
-	                admin.setRole("ADMIN");
+	                admin.setRole("ROLE_ADMIN");
 	                userRepository.save(admin);
 	                System.out.println("Admin user created successfully");
 	            }
